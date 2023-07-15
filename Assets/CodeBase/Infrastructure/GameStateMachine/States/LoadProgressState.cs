@@ -7,6 +7,8 @@ namespace CodeBase.Infrastructure.GameStateMachine.States
 {
   public class LoadProgressState : IState
   {
+    private const string FirstScene = "Main";
+    
     private readonly IGameStateMachineProvider _stateMachineProvider;
     private readonly IPersistentProgressService _progressService;
     private readonly ISaveLoadService _saveLoadService;
@@ -22,7 +24,7 @@ namespace CodeBase.Infrastructure.GameStateMachine.States
     {
       LoadProgressOrInitNew();
       
-      _stateMachineProvider.Value.Enter<LoadLevelState, string>("SampleScene");
+      _stateMachineProvider.Value.Enter<LoadLevelState, string>(FirstScene);
     }
 
     public void Exit()
