@@ -2,6 +2,7 @@
 {
   public enum WindowId
   {
-    None = 0
+    None = 0,
+    TapToStart = 1
   }
 }

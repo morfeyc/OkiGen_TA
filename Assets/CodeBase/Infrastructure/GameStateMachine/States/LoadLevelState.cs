@@ -64,7 +64,7 @@ namespace CodeBase.Infrastructure.GameStateMachine.States
     private async Task InitUI()
     {
       await _uiFactory.CreateUIRoot();
-      await _windowService.Open(WindowId.None);
+      await _windowService.Open(WindowId.TapToStart);
     }
 
     private LevelStaticData LevelStaticData() => 
