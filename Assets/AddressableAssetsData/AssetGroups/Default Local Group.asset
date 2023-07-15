@@ -29,7 +29,8 @@ MonoBehaviour:
   - m_GUID: d6746910c5b54194c8f7fb79cca600ee
     m_Address: Assets/Resources_moved/UI/Windows/TapToStart.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UIWindow
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 6fc47ae662a17af42a9606e27550a2ec, type: 2}
   m_SchemaSet:
