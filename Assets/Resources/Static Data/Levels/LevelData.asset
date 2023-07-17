@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1749768f54924c7fb22358adcdc0dcee, type: 3}
   m_Name: LevelData
   m_EditorClassIdentifier: 
-  LevelKey: SampleScene
+  LevelKey: Main
+  PlayerPosition: {x: 0, y: 0, z: 0}
+  CameraPosition: {x: 1.4107696, y: 5.731221, z: -4.3516955}
+  FruitSpawners:
+  - SpawnDelay: 3
+    Position: {x: -2.184, y: 2.048, z: -0.656}
