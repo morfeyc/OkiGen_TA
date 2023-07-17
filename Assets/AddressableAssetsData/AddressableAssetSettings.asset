@@ -85,6 +85,7 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - UIWindow
+    - Fruits
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 460a0f1645281204ebf90995e1f3849d, type: 2}

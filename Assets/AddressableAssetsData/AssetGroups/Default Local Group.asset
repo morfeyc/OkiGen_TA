@@ -21,13 +21,41 @@ MonoBehaviour:
     m_Address: UIRoot
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 6f008d9fb784009419eacba2573fd802
-    m_Address: Windows/None
+  - m_GUID: d6746910c5b54194c8f7fb79cca600ee
+    m_Address: Assets/Resources_moved/UI/Windows/TapToStart.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - UIWindow
-  - m_GUID: d6746910c5b54194c8f7fb79cca600ee
-    m_Address: Assets/Resources_moved/UI/Windows/TapToStart.prefab
+  - m_GUID: f01b4416f97865942971aa079129a162
+    m_Address: Assets/Prefabs/Fruits/Lemon.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Fruits
+  - m_GUID: d5d5222267a857344b70860e81b92b86
+    m_Address: Assets/Prefabs/Fruits/Pear.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Fruits
+  - m_GUID: 6632d2878d7e2364692dbd4315409101
+    m_Address: Assets/Prefabs/Fruits/Apple.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Fruits
+  - m_GUID: cf89fd72de0b2dd43a59b1df38834f5b
+    m_Address: FruitSpawner
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d91388e686dd19a4682a5c129e3b30a5
+    m_Address: Assets/Resources_moved/UI/Windows/MainWindow.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - UIWindow
+  - m_GUID: 53197f48fc49a8b408b663a6789d56e2
+    m_Address: CollectPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 09de1218add3fbd4199e429d81b307b4
+    m_Address: Assets/Resources_moved/UI/Windows/ReloadWindow.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - UIWindow
