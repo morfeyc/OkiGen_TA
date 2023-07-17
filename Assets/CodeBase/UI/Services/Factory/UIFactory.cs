@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CodeBase.Services.Assets;
 using CodeBase.UI.Services.Window;
 using CodeBase.UI.Windows;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -18,7 +19,7 @@ namespace CodeBase.UI.Services.Factory
     private readonly IAssetProvider _assets;
 
     private Transform _uiRoot;
-    private Dictionary<WindowId, GameObject> _windows;
+    private Dictionary<WindowId, GameObject> _windowsPrefabs;
 
     public UIFactory(DiContainer diContainer, IAssetProvider assets)
     {
@@ -28,21 +29,35 @@ namespace CodeBase.UI.Services.Factory
 
     public async void Initialize()
     {
-      _windows = (await _assets.LoadMany<GameObject>(UIWindowsLabelKey))
-        .ToDictionary(window => window.GetComponent<WindowIdentifier>().Id, w => w);
+      await CreateUIRoot();
     }
 
-    public async Task CreateUIRoot()
+    public async UniTask<WindowBase> CreateWindow(WindowId id)
     {
+      if(_windowsPrefabs == null) await LoadWindowsPrefabs();
+      
+      _windowsPrefabs.TryGetValue(id, out GameObject windowObj);
+      return _diContainer.InstantiatePrefabForComponent<WindowBase>(windowObj, _uiRoot);
+    }
+
+    public async UniTask CreateCollectPopup(Vector3 at)
+    {
+      GameObject obj = await _assets.Load<GameObject>(AssetAddress.CollectPopup);
+      _diContainer.InstantiatePrefab(obj, at, Quaternion.identity, null);
+    }
+
+    private async UniTask CreateUIRoot()
+    {
+      if(_uiRoot != null) return;
       GameObject uiRootPrefab = await _assets.Load<GameObject>(UIRootKey);
       GameObject uiRootObj = _diContainer.InstantiatePrefab(uiRootPrefab);
       _uiRoot = uiRootObj.transform;
     }
 
-    public async Task<WindowBase> CreateWindow(WindowId id)
+    private async Task LoadWindowsPrefabs()
     {
-      _windows.TryGetValue(id, out GameObject windowObj);
-      return _diContainer.InstantiatePrefabForComponent<WindowBase>(windowObj, _uiRoot);
+      _windowsPrefabs = (await _assets.LoadMany<GameObject>(UIWindowsLabelKey))
+        .ToDictionary(window => window.GetComponent<WindowIdentifier>().Id, w => w);
     }
   }
 }

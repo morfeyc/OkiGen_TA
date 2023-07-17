@@ -3,7 +3,7 @@
 namespace CodeBase.UI.Windows
 {
   [RequireComponent(typeof(Canvas))]
-  public abstract class WindowBase : MonoBehaviour
+  public class WindowBase : MonoBehaviour
   {
     [SerializeField] private Canvas _canvas;
 
@@ -14,11 +14,11 @@ namespace CodeBase.UI.Windows
     {
     }
 
-    public virtual void Open() =>
+    public virtual void Open() => 
       _canvas.enabled = true;
 
     public virtual void Close() =>
-      _canvas.enabled = false;
+      Destroy(gameObject);
 
     private void OnValidate() =>
       _canvas = GetComponent<Canvas>()

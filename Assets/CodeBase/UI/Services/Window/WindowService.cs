@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using CodeBase.UI.Services.Factory;
 using CodeBase.UI.Windows;
+using Cysharp.Threading.Tasks;
 
 namespace CodeBase.UI.Services.Window
 {
@@ -9,28 +9,27 @@ namespace CodeBase.UI.Services.Window
   {
     private readonly IUIFactory _uiFactory;
     
-    private readonly Dictionary<WindowId, WindowBase> _cachedWindows = new();
+    private readonly List<WindowBase> _opened = new();
 
     public WindowService(IUIFactory uiFactory)
     {
       _uiFactory = uiFactory;
     }
     
-    public async Task Open(WindowId id)
+    public async UniTask Open(WindowId id)
     {
-      if (TryOpenFromCache(id)) return;
-
       WindowBase window = await _uiFactory.CreateWindow(id);
       window.Open();
-      _cachedWindows[id] = window;
+      _opened.Add(window);
     }
 
-    private bool TryOpenFromCache(WindowId id)
+    public void CleanUp()
     {
-      if (!_cachedWindows.TryGetValue(id, out WindowBase window)) return false;
-      
-      window.Open();
-      return true;
+      foreach (WindowBase window in _opened)
+      {
+        if(window)
+          window.Close();
+      }
     }
   }
 }

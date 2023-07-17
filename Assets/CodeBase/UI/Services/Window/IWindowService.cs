@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 
 namespace CodeBase.UI.Services.Window
 {
   public interface IWindowService
   {
-    Task Open(WindowId id);
+    UniTask Open(WindowId id);
+    void CleanUp();
   }
 }
