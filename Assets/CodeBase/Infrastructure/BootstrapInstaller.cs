@@ -1,4 +1,6 @@
-﻿using CodeBase.Infrastructure.Factory;
+﻿using CodeBase.CameraLogic;
+using CodeBase.Infrastructure.Factory;
+using CodeBase.Infrastructure.Factory.Fruit;
 using CodeBase.Infrastructure.GameStateMachine;
 using CodeBase.Infrastructure.GameStateMachine.Provider;
 using CodeBase.Infrastructure.GameStateMachine.States;
@@ -7,7 +9,6 @@ using CodeBase.Services.Inputs;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
 using CodeBase.Services.SceneLoader;
-using CodeBase.Services.StaticData;
 using CodeBase.UI.Services.Factory;
 using CodeBase.UI.Services.Window;
 using Zenject;
@@ -21,7 +22,6 @@ namespace CodeBase.Infrastructure
       BindInputs();
       BindAssets();
       BindSceneLoader();
-      BindStaticData();
       BindServices();
       BindFactories();
       BindUIServices();
@@ -59,16 +59,7 @@ namespace CodeBase.Infrastructure
         .AsSingle()
         .NonLazy();
     }
-
-    private void BindStaticData()
-    {
-      Container
-        .BindInterfacesTo<StaticDataService>()
-        .AsSingle()
-        .NonLazy();
-    }
-
-
+    
     private void BindServices()
     {
       Container
@@ -88,6 +79,11 @@ namespace CodeBase.Infrastructure
         .BindInterfacesTo<GameFactory>()
         .AsSingle()
         .NonLazy();
+      
+      Container
+        .BindInterfacesTo<FruitFactory>()
+        .AsSingle()
+        .NonLazy();
     }
 
     private void BindUIServices()
@@ -99,6 +95,11 @@ namespace CodeBase.Infrastructure
       
       Container
         .BindInterfacesTo<WindowService>()
+        .AsSingle()
+        .NonLazy();
+      
+      Container
+        .BindInterfacesTo<CameraService>()
         .AsSingle()
         .NonLazy();
     }

@@ -16,12 +16,10 @@ namespace CodeBase.Infrastructure.Factory
 
     public void Initialize()
     {
-      // await _assets.Load<GameObject>(AssetAddress.Example); // TODO: delete this line
     }
 
     public void Cleanup()
     {
-      
     }
   }
 }

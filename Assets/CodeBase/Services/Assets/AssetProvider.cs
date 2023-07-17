@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -15,7 +13,7 @@ namespace CodeBase.Services.Assets
     public async void Initialize() =>
       await Addressables.InitializeAsync().Task;
 
-    public async Task<T> Load<T>(AssetReference assetReference) where T : class
+    public async UniTask<T> Load<T>(AssetReference assetReference) where T : class
     {
       if (TryToGetCached(assetReference.AssetGUID, out AsyncOperationHandle completedHandle))
         return completedHandle.Result as T;
@@ -23,7 +21,7 @@ namespace CodeBase.Services.Assets
       return await RunWithCacheOnComplete(Addressables.LoadAssetAsync<T>(assetReference), assetReference.AssetGUID);
     }
 
-    public async Task<T> Load<T>(string address) where T : class
+    public async UniTask<T> Load<T>(string address) where T : class
     {
       if (TryToGetCached(address, out AsyncOperationHandle completedHandle))
         return completedHandle.Result as T;
@@ -31,13 +29,13 @@ namespace CodeBase.Services.Assets
       return await RunWithCacheOnComplete(Addressables.LoadAssetAsync<T>(address), address);
     }
 
-    public async Task<IList<T>> LoadMany<T>(string label) where T : class
+    public async UniTask<IList<T>> LoadMany<T>(string label) where T : class
     {
       AsyncOperationHandle<IList<T>> asyncOperationHandle = Addressables.LoadAssetsAsync<T>(label, null);
       return await RunWithCacheOnComplete(asyncOperationHandle, label);
     }
     
-    public void Cleanup()
+    public void CleanUp()
     {
       foreach (List<AsyncOperationHandle> resourceHandles in _handles.Values)
       foreach (AsyncOperationHandle handle in resourceHandles)
@@ -64,13 +62,13 @@ namespace CodeBase.Services.Assets
       return false;
     }
 
-    private async Task<T> RunWithCacheOnComplete<T>(AsyncOperationHandle<T> handle, string cacheKey) where T : class
+    private async UniTask<T> RunWithCacheOnComplete<T>(AsyncOperationHandle<T> handle, string cacheKey) where T : class
     {
       AddHandle(cacheKey, handle);
       return await handle.Task;
     }
     
-    private async Task<IList<T>> RunWithCacheOnComplete<T>(AsyncOperationHandle<IList<T>> handles, string cacheKey) where T : class
+    private async UniTask<IList<T>> RunWithCacheOnComplete<T>(AsyncOperationHandle<IList<T>> handles, string cacheKey) where T : class
     {
       AddHandle(cacheKey, handles);
       return await handles.Task;
