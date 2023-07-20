@@ -1,5 +1,4 @@
 using CodeBase.Infrastructure.GameStateMachine.Provider;
-using CodeBase.Services.StaticData;
 
 namespace CodeBase.Infrastructure.GameStateMachine.States
 {

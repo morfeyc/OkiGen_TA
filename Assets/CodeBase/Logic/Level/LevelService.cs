@@ -1,12 +1,9 @@
 ﻿using System;
 using CodeBase.Infrastructure.GameStateMachine.Provider;
-using CodeBase.Infrastructure.GameStateMachine.States;
 using CodeBase.Infrastructure.Services.Level;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.UI.Services.Window;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CodeBase.Logic.Level
 {
