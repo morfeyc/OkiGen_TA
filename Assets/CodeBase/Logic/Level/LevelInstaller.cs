@@ -1,14 +1,14 @@
 ﻿using Cinemachine;
 using CodeBase.CameraLogic;
 using CodeBase.Infrastructure.Factory.Fruit;
+using CodeBase.Infrastructure.Services.Level;
 using CodeBase.Logic.Fruits;
-using CodeBase.Logic.Level;
 using CodeBase.Logic.Player;
 using CodeBase.UI.Services.Window;
 using UnityEngine;
 using Zenject;
 
-namespace CodeBase.Infrastructure.Services.Level
+namespace CodeBase.Logic.Level
 {
   public class LevelInstaller : MonoInstaller, IInitializable
   {
@@ -20,7 +20,6 @@ namespace CodeBase.Infrastructure.Services.Level
     
     [SerializeField] private FruitSpawnMarker[] FruitSpawnMarkers;
     [SerializeField] private FruitSelectedOutline Outliner;
-    
     
     private IFruitFactory _fruitFactory;
     private IWindowService _windowService;

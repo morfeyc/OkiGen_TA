@@ -1,11 +1,10 @@
 ﻿using System;
 using CodeBase.Infrastructure.GameStateMachine.Provider;
-using CodeBase.Infrastructure.Services.Level;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.UI.Services.Window;
 using Cysharp.Threading.Tasks;
 
-namespace CodeBase.Logic.Level
+namespace CodeBase.Infrastructure.Services.Level
 {
   public class LevelService : ILevelService
   {
@@ -30,6 +29,7 @@ namespace CodeBase.Logic.Level
     private async void ReloadLevel()
     {
       await UniTask.Delay(TimeSpan.FromSeconds(SecondsBeforeRestart));
+      _windowService.CloseAll();
       _windowService.Open(WindowId.LevelEnd);
     }
   }
