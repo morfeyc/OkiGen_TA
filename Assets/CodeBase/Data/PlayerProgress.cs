@@ -11,10 +11,5 @@ namespace CodeBase.Data
     {
       Task = new GameTask();
     }
-
-    public void NewTask()
-    {
-      Task = new GameTask();
-    }
   }
 }

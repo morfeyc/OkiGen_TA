@@ -1,6 +1,5 @@
-﻿using System;
+﻿using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic.Fruits;
-using CodeBase.Services.PersistentProgress;
 using TMPro;
 using UnityEngine;
 using Zenject;

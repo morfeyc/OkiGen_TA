@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using CodeBase.Infrastructure.Services.Assets;
 using CodeBase.Logic.Fruits;
-using CodeBase.Services.Assets;
+using CodeBase.Services.StaticData;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Zenject;
 
 namespace CodeBase.Infrastructure.Factory.Fruit
@@ -10,33 +11,32 @@ namespace CodeBase.Infrastructure.Factory.Fruit
   public class FruitFactory : IFruitFactory, IInitializable
   {
     public List<FruitSpawner> Spawners { get; private set; } = new();
-    private readonly List<GameObject> _fruits = new();
 
     private readonly IAssetProvider _assetProvider;
-    private readonly DiContainer _diContainer;
+    private readonly IStaticDataService _staticData;
     
-    private Dictionary<FruitId, GameObject> _fruitsPrefabs;
+    private readonly List<GameObject> _spawnedFruits = new();
+    private readonly DiContainer _diContainer;
 
-    public FruitFactory(DiContainer diContainer, IAssetProvider assetProvider)
+    public FruitFactory(DiContainer diContainer, IAssetProvider assetProvider, IStaticDataService staticData)
     {
       _diContainer = diContainer;
       _assetProvider = assetProvider;
+      _staticData = staticData;
     }
 
-    public async void Initialize()
+    public void Initialize()
     {
-      _fruitsPrefabs = (await _assetProvider.LoadMany<GameObject>(AssetAddress.FruitsLabelKey))
-        .ToDictionary(f => f.GetComponent<FruitIdentifier>().Id, f => f);
-
-      await _assetProvider.Load<GameObject>(AssetAddress.FruitSpawner);
+      _assetProvider.Load<GameObject>(AssetAddress.FruitSpawner);
     }
 
-    public void CreateFruit(FruitId id, Vector3 at)
+    public async void CreateFruit(FruitId id, Vector3 at)
     {
-      if (!_fruitsPrefabs.TryGetValue(id, out GameObject fruitPrefab)) return;
-
+      if(!_staticData.Fruits.TryGetValue(id, out AssetReference fruitAssetReference)) throw new KeyNotFoundException();
+      
+      GameObject fruitPrefab = await _assetProvider.Load<GameObject>(fruitAssetReference);
       GameObject fruitObj = _diContainer.InstantiatePrefab(fruitPrefab, at, Quaternion.identity, null);
-      _fruits.Add(fruitObj);
+      _spawnedFruits.Add(fruitObj);
     }
 
     public async void CreateFruitsSpawner(Vector3 at, float spawnDelay)
@@ -57,10 +57,10 @@ namespace CodeBase.Infrastructure.Factory.Fruit
 
     private void DestroyFruits()
     {
-      foreach (GameObject fruitObj in _fruits)
+      foreach (GameObject fruitObj in _spawnedFruits)
         Object.Destroy(fruitObj);
 
-      _fruits.Clear();
+      _spawnedFruits.Clear();
     }
 
     private void DestroySpawners()

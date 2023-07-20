@@ -1,8 +1,8 @@
-﻿using CodeBase.Infrastructure.Factory.Fruit;
-using CodeBase.Services.Assets;
-using CodeBase.Services.PersistentProgress;
-using CodeBase.Services.SceneLoader;
-using CodeBase.StaticData;
+﻿using CodeBase.Data;
+using CodeBase.Infrastructure.Factory.Fruit;
+using CodeBase.Infrastructure.Services.Assets;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.SceneLoader;
 using CodeBase.UI.Services.Window;
 
 namespace CodeBase.Infrastructure.GameStateMachine.States
@@ -14,8 +14,6 @@ namespace CodeBase.Infrastructure.GameStateMachine.States
     private readonly IFruitFactory _fruitFactory;
     private readonly IWindowService _windowService;
     private readonly IPersistentProgressService _progressService;
-
-    private LevelStaticData _levelData;
 
     public LoadLevelState(ISceneLoaderService sceneLoader,
       IAssetProvider assetProvider,
@@ -35,11 +33,16 @@ namespace CodeBase.Infrastructure.GameStateMachine.States
       _windowService.CleanUp();
       _fruitFactory.CleanUp();
       _assetProvider.CleanUp();
-      _progressService.Progress.NewTask();
-      
+      InitProgress();
+
       _sceneLoader.Load(payload);
     }
-    
+
+    private void InitProgress()
+    {
+      _progressService.Progress = new PlayerProgress();
+    }
+
     public void Exit()
     {
     }

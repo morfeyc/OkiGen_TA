@@ -1,8 +1,5 @@
-﻿using System;
-using CodeBase.Services.PersistentProgress;
-using ModestTree;
+﻿using CodeBase.Infrastructure.Services.PersistentProgress;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 

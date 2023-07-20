@@ -18,7 +18,7 @@ namespace CodeBase.UI.Windows
       _canvas.enabled = true;
 
     public virtual void Close() =>
-      Destroy(gameObject);
+      _canvas.enabled = false;
 
     private void OnValidate() =>
       _canvas = GetComponent<Canvas>()

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading;
-using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Factory.Fruit;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
-using Random = UnityEngine.Random;
 
 namespace CodeBase.Logic.Fruits
 {

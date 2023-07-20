@@ -4,7 +4,7 @@ using CodeBase.UI.Services.Window;
 
 namespace CodeBase.Infrastructure.GameStateMachine.States
 {
-  public class GameLoopState : ITickableState
+  public class GameLoopState : IState
   {
     private readonly IWindowService _windowService;
     private readonly IFruitFactory _fruitFactory;
@@ -19,11 +19,6 @@ namespace CodeBase.Infrastructure.GameStateMachine.States
     {
       _windowService.Open(WindowId.Main);
       EnableFruitSpawners();
-    }
-
-    public void Tick()
-    {
-      
     }
 
     public void Exit()

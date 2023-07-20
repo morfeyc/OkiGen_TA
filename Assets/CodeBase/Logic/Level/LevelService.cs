@@ -1,7 +1,8 @@
 ﻿using System;
 using CodeBase.Infrastructure.GameStateMachine.Provider;
 using CodeBase.Infrastructure.GameStateMachine.States;
-using CodeBase.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.Level;
+using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.UI.Services.Window;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -26,7 +27,6 @@ namespace CodeBase.Logic.Level
 
     private void Init()
     {
-      _progressService.Progress.NewTask();
       _progressService.Progress.Task.OnCompleted.AddListener(ReloadLevel);
     }
 

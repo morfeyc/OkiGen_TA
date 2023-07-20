@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using CodeBase.UI.Services.Factory;
 using CodeBase.UI.Windows;
 using Cysharp.Threading.Tasks;
@@ -25,10 +26,9 @@ namespace CodeBase.UI.Services.Window
 
     public void CleanUp()
     {
-      foreach (WindowBase window in _opened)
+      foreach (WindowBase window in _opened.Where(window => window != null))
       {
-        if(window)
-          window.Close();
+        window.Close();
       }
     }
   }

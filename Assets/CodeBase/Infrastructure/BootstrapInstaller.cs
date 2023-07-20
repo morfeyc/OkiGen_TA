@@ -1,14 +1,13 @@
 ﻿using CodeBase.CameraLogic;
-using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Factory.Fruit;
 using CodeBase.Infrastructure.GameStateMachine;
 using CodeBase.Infrastructure.GameStateMachine.Provider;
 using CodeBase.Infrastructure.GameStateMachine.States;
-using CodeBase.Services.Assets;
-using CodeBase.Services.Inputs;
-using CodeBase.Services.PersistentProgress;
-using CodeBase.Services.SaveLoad;
-using CodeBase.Services.SceneLoader;
+using CodeBase.Infrastructure.Services.Assets;
+using CodeBase.Infrastructure.Services.Inputs;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.SceneLoader;
+using CodeBase.Services.StaticData;
 using CodeBase.UI.Services.Factory;
 using CodeBase.UI.Services.Window;
 using Zenject;
@@ -19,6 +18,7 @@ namespace CodeBase.Infrastructure
   {
     public override void InstallBindings()
     {
+      BindStaticData();
       BindInputs();
       BindAssets();
       BindSceneLoader();
@@ -34,6 +34,14 @@ namespace CodeBase.Infrastructure
       IGameStateMachine gameStateMachine = Container.Resolve<IGameStateMachine>();
       Container.Resolve<IGameStateMachineProvider>().Value = gameStateMachine;
       gameStateMachine.Enter<BootstrapState>();
+    }
+
+    private void BindStaticData()
+    {
+      Container
+        .BindInterfacesTo<StaticDataService>()
+        .AsSingle()
+        .NonLazy();
     }
 
     private void BindInputs()
@@ -66,20 +74,10 @@ namespace CodeBase.Infrastructure
         .BindInterfacesTo<PersistentProgressService>()
         .AsSingle()
         .NonLazy();
-
-      Container
-        .BindInterfacesTo<SaveLoadService>()
-        .AsSingle()
-        .NonLazy();
     }
 
     private void BindFactories()
     {
-      Container
-        .BindInterfacesTo<GameFactory>()
-        .AsSingle()
-        .NonLazy();
-      
       Container
         .BindInterfacesTo<FruitFactory>()
         .AsSingle()
@@ -125,12 +123,7 @@ namespace CodeBase.Infrastructure
         .BindInterfacesTo<BootstrapState>()
         .AsSingle()
         .NonLazy();
-
-      Container
-        .BindInterfacesTo<LoadProgressState>()
-        .AsSingle()
-        .NonLazy();
-
+      
       Container
         .BindInterfacesTo<LoadLevelState>()
         .AsSingle()

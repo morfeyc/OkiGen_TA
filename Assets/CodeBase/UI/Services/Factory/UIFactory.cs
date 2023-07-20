@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CodeBase.Services.Assets;
+using CodeBase.Infrastructure.GameStateMachine.States;
+using CodeBase.Infrastructure.Services.Assets;
+using CodeBase.Services.StaticData;
 using CodeBase.UI.Services.Window;
 using CodeBase.UI.Windows;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Zenject;
 
 namespace CodeBase.UI.Services.Factory
@@ -16,14 +19,15 @@ namespace CodeBase.UI.Services.Factory
     private const string UIWindowsLabelKey = "UIWindow";
 
     private readonly DiContainer _diContainer;
+    private readonly IStaticDataService _staticData;
     private readonly IAssetProvider _assets;
 
     private Transform _uiRoot;
-    private Dictionary<WindowId, GameObject> _windowsPrefabs;
 
-    public UIFactory(DiContainer diContainer, IAssetProvider assets)
+    public UIFactory(DiContainer diContainer, IStaticDataService staticData, IAssetProvider assets)
     {
       _diContainer = diContainer;
+      _staticData = staticData;
       _assets = assets;
     }
 
@@ -34,9 +38,9 @@ namespace CodeBase.UI.Services.Factory
 
     public async UniTask<WindowBase> CreateWindow(WindowId id)
     {
-      if(_windowsPrefabs == null) await LoadWindowsPrefabs();
+      if (!_staticData.Windows.TryGetValue(id, out AssetReference windowsAssetReference)) throw new KeyNotFoundException();
       
-      _windowsPrefabs.TryGetValue(id, out GameObject windowObj);
+      GameObject windowObj = await _assets.Load<GameObject>(windowsAssetReference);
       return _diContainer.InstantiatePrefabForComponent<WindowBase>(windowObj, _uiRoot);
     }
 
@@ -52,12 +56,6 @@ namespace CodeBase.UI.Services.Factory
       GameObject uiRootPrefab = await _assets.Load<GameObject>(UIRootKey);
       GameObject uiRootObj = _diContainer.InstantiatePrefab(uiRootPrefab);
       _uiRoot = uiRootObj.transform;
-    }
-
-    private async Task LoadWindowsPrefabs()
-    {
-      _windowsPrefabs = (await _assets.LoadMany<GameObject>(UIWindowsLabelKey))
-        .ToDictionary(window => window.GetComponent<WindowIdentifier>().Id, w => w);
     }
   }
 }
