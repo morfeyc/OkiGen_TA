@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Infrastructure.Services.Assets;
+using CodeBase.Infrastructure.Services.StaticData;
 using CodeBase.Logic.Fruits;
-using CodeBase.Services.StaticData;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;

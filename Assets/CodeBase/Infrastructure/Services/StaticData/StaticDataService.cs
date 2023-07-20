@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;
 
-namespace CodeBase.Services.StaticData
+namespace CodeBase.Infrastructure.Services.StaticData
 {
   public class StaticDataService : IStaticDataService, IInitializable
   {

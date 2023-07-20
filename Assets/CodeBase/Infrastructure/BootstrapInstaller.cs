@@ -7,7 +7,7 @@ using CodeBase.Infrastructure.Services.Assets;
 using CodeBase.Infrastructure.Services.Inputs;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SceneLoader;
-using CodeBase.Services.StaticData;
+using CodeBase.Infrastructure.Services.StaticData;
 using CodeBase.UI.Services.Factory;
 using CodeBase.UI.Services.Window;
 using Zenject;

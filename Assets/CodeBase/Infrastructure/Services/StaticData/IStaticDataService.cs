@@ -3,7 +3,7 @@ using CodeBase.Logic.Fruits;
 using CodeBase.UI.Services.Window;
 using UnityEngine.AddressableAssets;
 
-namespace CodeBase.Services.StaticData
+namespace CodeBase.Infrastructure.Services.StaticData
 {
   public interface IStaticDataService
   {
