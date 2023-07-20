@@ -8,7 +8,6 @@ namespace CodeBase.Infrastructure.Services.StaticData
   public interface IStaticDataService
   {
     Dictionary<WindowId, AssetReference> Windows { get; }
-    Dictionary<FruitId, AssetReference> Fruits { get;  }
-    void Initialize();
+    Dictionary<FruitId, AssetReference> Fruits { get; }
   }
 }
