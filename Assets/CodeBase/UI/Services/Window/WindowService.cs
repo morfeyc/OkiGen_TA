@@ -9,27 +9,35 @@ namespace CodeBase.UI.Services.Window
   public class WindowService : IWindowService
   {
     private readonly IUIFactory _uiFactory;
-    
-    private readonly List<WindowBase> _opened = new();
+
+    private readonly Dictionary<WindowId, WindowBase> _cachedWindows = new();
 
     public WindowService(IUIFactory uiFactory)
     {
       _uiFactory = uiFactory;
     }
-    
+
     public async UniTask Open(WindowId id)
     {
+      if (TryOpenFromCache(id)) return;
+
       WindowBase window = await _uiFactory.CreateWindow(id);
       window.Open();
-      _opened.Add(window);
+      _cachedWindows[id] = window;
     }
 
-    public void CleanUp()
+    public void CloseAll()
     {
-      foreach (WindowBase window in _opened.Where(window => window != null))
-      {
+      foreach (WindowBase window in _cachedWindows.Values) 
         window.Close();
-      }
+    }
+
+    private bool TryOpenFromCache(WindowId id)
+    {
+      if (!_cachedWindows.TryGetValue(id, out WindowBase window)) return false;
+
+      window.Open();
+      return true;
     }
   }
 }
