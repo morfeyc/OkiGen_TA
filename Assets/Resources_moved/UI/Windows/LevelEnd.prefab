@@ -344,6 +344,7 @@ GameObject:
   - component: {fileID: 2323558570803797703}
   - component: {fileID: 8264757788564764293}
   - component: {fileID: 7957361333344454772}
+  - component: {fileID: 1177055114501303718}
   m_Layer: 5
   m_Name: Btn_MainButton_BlueGray
   m_TagString: Untagged
@@ -467,3 +468,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Button: {fileID: 8264757788564764293}
+--- !u!114 &1177055114501303718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9207983382623599448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c474a12325474f2485cd3b396a1cb7a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Button: {fileID: 8264757788564764293}
+  Window: {fileID: 5628551796194944569}
