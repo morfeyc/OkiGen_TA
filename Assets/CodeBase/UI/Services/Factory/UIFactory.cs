@@ -16,7 +16,6 @@ namespace CodeBase.UI.Services.Factory
   public class UIFactory : IUIFactory, IInitializable
   {
     private const string UIRootKey = "UIRoot";
-    private const string UIWindowsLabelKey = "UIWindow";
 
     private readonly DiContainer _diContainer;
     private readonly IStaticDataService _staticData;
