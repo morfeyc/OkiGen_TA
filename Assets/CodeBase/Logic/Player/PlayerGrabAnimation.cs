@@ -23,8 +23,6 @@ namespace CodeBase.Logic.Player
     [SerializeField] private float TimeToIdle;
     [SerializeField] private float TimeToAlign;
 
-    [SerializeField] private Transform Target;
-    
     private Vector3 _idleHandPos;
 
     private void Awake()
@@ -34,12 +32,6 @@ namespace CodeBase.Logic.Player
       DisableIK();
     }
     
-    [ContextMenu("Grab")]
-    private void a()
-    {
-      Grab(Target).Forget();
-    }
-
     public async UniTask Grab(Transform objTransform)
     {
       IsGrabbing = true;
