@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414411964}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.7, y: 15.5, z: 10}
+  m_LocalPosition: {x: -1.43, y: 19.14, z: 8.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -170,7 +170,11 @@ MonoBehaviour:
   FastIKTarget: {fileID: 3141545835248593894}
   RightHand: {fileID: 6745376021817472445}
   ObjInHandPos: {fileID: 414411965}
+  TimeToTarget: 0.75
+  OnTargetRotation: {x: 0, y: -60, z: 90}
   Basket: {fileID: 1318468970403608060}
+  TimeToBasket: 0.5
+  OnBasketRotation: {x: -24, y: -172, z: 70}
   YCurveToBasket:
     serializedVersion: 2
     m_Curve:
@@ -204,8 +208,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  TimeToTarget: 0.75
-  TimeToBasket: 0.5
   TimeToIdle: 0.35
   TimeToAlign: 0.2
   Target: {fileID: 0}
@@ -264,7 +266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3141545835248593889}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.6711932, y: 1.1593455, z: 0.34415418}
+  m_LocalPosition: {x: -0.6711932, y: -60, z: 0.34415418}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

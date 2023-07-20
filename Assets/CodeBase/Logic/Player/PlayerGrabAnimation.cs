@@ -14,24 +14,36 @@ namespace CodeBase.Logic.Player
     [SerializeField] private FastIKFabric FastIK;
     [SerializeField] private Transform FastIKTarget;
     [SerializeField] private Transform RightHand;
+    
+    [Header("MOVE Values")]
+    [Header("To Target")]
     [SerializeField] private Transform ObjInHandPos;
-    [SerializeField] private Transform Basket;
-    [SerializeField] private AnimationCurve YCurveToBasket;
-
     [SerializeField] private float TimeToTarget;
+    [SerializeField] private Vector3 OnTargetRotation;
+
+    [Header("To Basket")]
+    [SerializeField] private Transform Basket;
     [SerializeField] private float TimeToBasket;
+    [SerializeField] private Vector3 OnBasketRotation;
+    [SerializeField] private AnimationCurve YCurveToBasket;
+    
+    [Header("To Idle")]
     [SerializeField] private float TimeToIdle;
     [SerializeField] private float TimeToAlign;
 
+    [SerializeField] private Transform Target;
+    
     private Vector3 _idleHandPos;
+    private Vector3 _idleHandRotation;
 
     private void Awake()
     {
       _idleHandPos = RightHand.position;
+      _idleHandRotation = RightHand.localRotation.eulerAngles;
       ResetHandPosition();
       DisableIK();
     }
-    
+
     public async UniTask Grab(Transform objTransform)
     {
       IsGrabbing = true;
@@ -41,7 +53,7 @@ namespace CodeBase.Logic.Player
       await HandToObj(objTransform);
       
       await GrabObj(objTransform);
-      
+
       objRb.isKinematic = true;
       
       await ObjToHand(objTransform);
@@ -50,10 +62,8 @@ namespace CodeBase.Logic.Player
       
       await ReleaseObj(objTransform);
       objRb.isKinematic = false;
-
-      await HandToIdle();
       
-      //await ObjToBasket(objTransform);
+      await HandToIdle();
 
       ResetHandPosition();
       DisableIK();
@@ -63,37 +73,43 @@ namespace CodeBase.Logic.Player
     private async Task HandToObj(Transform objTransform)
     {
       Vector3 startPos = FastIKTarget.transform.position;
+      Quaternion startRotation = FastIKTarget.transform.localRotation;
       for (float t = 0; t < 1; t += Time.deltaTime / TimeToTarget)
       {
         FastIKTarget.transform.position = Vector3.Slerp(startPos, objTransform.transform.position, t);
+        FastIKTarget.transform.localRotation = Quaternion.Slerp(startRotation, Quaternion.Euler(OnTargetRotation), t);
         await UniTask.Yield();
       }
 
       FastIKTarget.transform.position = objTransform.transform.position;
     }
 
-    private async Task HandToIdle()
-    {
-      Vector3 startPos = FastIKTarget.transform.position;
-      for (float t = 0; t < 1; t += Time.deltaTime / TimeToIdle)
-      {
-        FastIKTarget.transform.position = Vector3.Slerp(startPos, _idleHandPos, t);
-        await UniTask.Yield();
-      }
-    }
-
     private async Task HandToBasket()
     {
       Vector3 startPos = FastIKTarget.transform.position;
+      Quaternion startRotation = FastIKTarget.transform.localRotation;
       for (float t = 0; t < 1; t += (Time.deltaTime / TimeToBasket))
       {
         Vector3 newPos = Vector3.Slerp(startPos, Basket.transform.position, t);
         newPos += YCurveToBasket.Evaluate(t) * Vector3.up;
         FastIKTarget.transform.position = newPos;
+        FastIKTarget.transform.localRotation = Quaternion.Slerp(startRotation, Quaternion.Euler(OnBasketRotation), t);
         await UniTask.Yield();
       }
       
       FastIKTarget.transform.position = Basket.transform.position;
+    }
+
+    private async Task HandToIdle()
+    {
+      Vector3 startPos = FastIKTarget.transform.position;
+      Quaternion startRotation = FastIKTarget.transform.localRotation;
+      for (float t = 0; t < 1; t += Time.deltaTime / TimeToIdle)
+      {
+        FastIKTarget.transform.position = Vector3.Slerp(startPos, _idleHandPos, t);
+        FastIKTarget.transform.localRotation = Quaternion.Slerp(startRotation, Quaternion.Euler(_idleHandRotation), t);
+        await UniTask.Yield();
+      }
     }
 
     private async Task ObjToHand(Transform objTransform)
@@ -122,18 +138,6 @@ namespace CodeBase.Logic.Player
       objTransform.SetParent(null);
     }
 
-    private async Task ObjToBasket(Transform objTransform)
-    {
-      Vector3 startPos = objTransform.position;
-      for (float t = 0; t < 1; t += Time.deltaTime / TimeToAlign)
-      {
-        objTransform.position = Vector3.Slerp(startPos, Basket.position, t);
-        await UniTask.Yield();
-      }
-
-      objTransform.position = Basket.position;
-    }
-
     private void EnableIK()
     {
       FastIK.enabled = true;
@@ -147,6 +151,7 @@ namespace CodeBase.Logic.Player
     private void ResetHandPosition()
     {
       FastIKTarget.position = _idleHandPos;
+      FastIKTarget.localRotation = Quaternion.Euler(_idleHandRotation);
     }
   }
 }
