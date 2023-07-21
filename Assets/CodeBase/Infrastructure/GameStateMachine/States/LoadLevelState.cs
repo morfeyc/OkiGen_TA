@@ -27,7 +27,6 @@ namespace CodeBase.Infrastructure.GameStateMachine.States
     public void Enter(string payload)
     {
       _fruitFactory.CleanUp();
-      _assetProvider.CleanUp();
       InitProgress();
 
       _sceneLoader.Load(payload);

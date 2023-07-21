@@ -1,4 +1,6 @@
-﻿using CodeBase.CameraLogic;
+﻿using System;
+using System.Collections.Generic;
+using CodeBase.CameraLogic;
 using CodeBase.Infrastructure.Factory.Fruit;
 using CodeBase.Infrastructure.GameStateMachine;
 using CodeBase.Infrastructure.GameStateMachine.Provider;
@@ -140,6 +142,15 @@ namespace CodeBase.Infrastructure
       Container
         .Bind<IInitializable>()
         .FromInstance(this);
+    }
+
+    private void OnApplicationQuit()
+    {
+      List<IDisposable> disposables = Container.ResolveAll<IDisposable>();
+      foreach (IDisposable disposable in disposables)
+      {
+        disposable.Dispose();
+      }
     }
   }
 }

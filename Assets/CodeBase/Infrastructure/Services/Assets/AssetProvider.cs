@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
@@ -6,7 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace CodeBase.Infrastructure.Services.Assets
 {
-  public class AssetProvider : IAssetProvider, IInitializable
+  public class AssetProvider : IAssetProvider, IInitializable, IDisposable
   {
     private readonly Dictionary<string, List<AsyncOperationHandle>> _handles = new();
 
@@ -29,13 +30,7 @@ namespace CodeBase.Infrastructure.Services.Assets
       return await RunWithCacheOnComplete(Addressables.LoadAssetAsync<T>(address), address);
     }
 
-    public async UniTask<IList<T>> LoadMany<T>(string label) where T : class
-    {
-      AsyncOperationHandle<IList<T>> asyncOperationHandle = Addressables.LoadAssetsAsync<T>(label, null);
-      return await RunWithCacheOnComplete(asyncOperationHandle, label);
-    }
-    
-    public void CleanUp()
+    public void Dispose()
     {
       foreach (List<AsyncOperationHandle> resourceHandles in _handles.Values)
       foreach (AsyncOperationHandle handle in resourceHandles)
@@ -64,25 +59,14 @@ namespace CodeBase.Infrastructure.Services.Assets
 
     private async UniTask<T> RunWithCacheOnComplete<T>(AsyncOperationHandle<T> handle, string cacheKey) where T : class
     {
-      AddHandle(cacheKey, handle);
-      return await handle.Task;
-    }
-    
-    private async UniTask<IList<T>> RunWithCacheOnComplete<T>(AsyncOperationHandle<IList<T>> handles, string cacheKey) where T : class
-    {
-      AddHandle(cacheKey, handles);
-      return await handles.Task;
-    }
-
-    private void AddHandle<T>(string key, AsyncOperationHandle<T> handle) where T : class
-    {
-      if (!_handles.TryGetValue(key, out List<AsyncOperationHandle> resourceHandle))
+      if (!_handles.TryGetValue(cacheKey, out List<AsyncOperationHandle> resourceHandle))
       {
         resourceHandle = new List<AsyncOperationHandle>();
-        _handles[key] = resourceHandle;
+        _handles[cacheKey] = resourceHandle;
       }
 
       resourceHandle.Add(handle);
+      return await handle.Task;
     }
   }
 }
